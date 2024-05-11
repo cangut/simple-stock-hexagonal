@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  mongodb_container:
+    image: mongo:4.4
+    hostname: mongo
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME = stockuser
+      - MONGO_INITDB_ROOT_PASSWORD = 12345
+      - MONGO_INITDB_DATABASE = stock
+    volumes:
+      - "./docker-compose/mongodb/data:/data/db"
+      - "./docker-compose/mongodb/log:/var/log/mongodb/"
+      - "./docker-compose/mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro"
+    networks:
+      - ${GLOBAL_NETWORK:-stock}
+networks:
+  stock:
+    driver: bridge

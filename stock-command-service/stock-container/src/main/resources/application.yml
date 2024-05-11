@@ -1,0 +1,29 @@
+server:
+  port: 8182
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: stock
+      auto-index-creation: true
+      uri: mongodb://stockuser:12345@localhost:27017/stock?authSource=stock&authMechanism=SCRAM-SHA-1
+  kafka:
+    producer:
+      bootstrap-servers: localhost:19092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      ack-mode: manual_immediate
+    consumer:
+      bootstrap-servers: localhost:19092
+      group-id: boConsumer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'

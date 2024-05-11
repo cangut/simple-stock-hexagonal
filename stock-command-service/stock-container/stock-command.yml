@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  stock-command:
+    container_name: 'stock-command'
+    ports:
+      - "8182:8182"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb_container
+      - kafka-broker-1
+    environment:
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 -Xms128m -Xmx256m
+      - SERVER_PORT=8182
+      - SPRING_APPLICATION_NAME=stock-command
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=stock
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_USERNAME=user1
+      - SPRING_DATA_MONGODB_PASSWORD=user1
+      - SPRING_DATA_MONGODB_AUTO_INDEX_CREATION=true
+      - SPRING_KAFKA_LISTENER_ACK-MODE=manual_immediate
+      - SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS=kafka:19092
+      - SPRING_KAFKA_PRODUCER_KEY-SERIALIZER=org.apache.kafka.common.serialization.StringSerializer
+      - SPRING_KAFKA_PRODUCER_VALUE-SERIALIZER=org.springframework.kafka.support.serializer.JsonSerializer
+networks:
+  stock:
+    driver: bridge
