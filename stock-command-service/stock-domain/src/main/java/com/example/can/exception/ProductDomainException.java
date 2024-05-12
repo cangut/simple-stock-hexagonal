@@ -9,6 +9,11 @@ public class ProductDomainException extends RuntimeException {
         this.message = message;
     }
 
+    public static class OptimisticConcurrency extends ProductDomainException {
+        public OptimisticConcurrency(String message) {
+            super(message);
+        }
+    }
 
     public static class ProductStateIsNotActive extends ProductDomainException {
         public ProductStateIsNotActive(String message) {

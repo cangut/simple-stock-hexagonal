@@ -1,17 +1,14 @@
 package com.example.can.aggregate;
 
 import com.example.can.event.DomainEvent;
+import com.example.can.exception.ProductDomainException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Slf4j
 public abstract class AggregateRoot<Id> {
@@ -31,6 +28,12 @@ public abstract class AggregateRoot<Id> {
 
     public List<DomainEvent> getUnconsumedDomainEvents() {
         return this.domainEvents;
+    }
+
+    public void checkOptimisticConcurrency(int thatVersion) {
+        if (this.version != -1 && thatVersion != this.getVersion()) {
+            throw new ProductDomainException.OptimisticConcurrency("Aggregate inserted or updated by another process");
+        }
     }
 
     protected void applyChange(DomainEvent event, boolean isNew) {

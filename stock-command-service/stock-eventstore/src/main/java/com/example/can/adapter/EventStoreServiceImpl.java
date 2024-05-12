@@ -32,9 +32,7 @@ public class EventStoreServiceImpl implements EventStoreService {
         var eventModels = eventStoreRepository.findByAggregateId(product.getId().getValue().toString());
         var unconsumedDomainEvents = product.getUnconsumedDomainEvents();
 
-        if (product.getVersion() != -1 && eventModels.getLast().getVersion() != product.getVersion()) {
-            throw new ProductApplicationException.OptimisticConcurrency("Aggregate inserted or updated by another process");
-        }
+        product.checkOptimisticConcurrency(eventModels.getLast().getVersion());
 
         int version = product.getVersion();
         for (DomainEvent event : unconsumedDomainEvents) {
