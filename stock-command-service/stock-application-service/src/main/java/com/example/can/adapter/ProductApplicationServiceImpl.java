@@ -89,6 +89,7 @@ public class ProductApplicationServiceImpl extends ProductApplicationService<Pro
     protected ProductResponse handle(ProductCommand.ChangeStatus changeStatus) {
         var product = eventStore.getProductById(changeStatus.productId().getValue().toString());
         product.changeStatus(changeStatus);
+        eventStore.saveEvents(product);
         return new ProductResponse.ProductStatusChanged(product.getId().getValue());
     }
 }
