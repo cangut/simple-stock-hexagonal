@@ -32,7 +32,9 @@ public class EventStoreServiceImpl implements EventStoreService {
         var eventModels = eventStoreRepository.findByAggregateId(product.getId().getValue().toString());
         var unconsumedDomainEvents = product.getUnconsumedDomainEvents();
 
-        product.checkOptimisticConcurrency(eventModels.getLast().getVersion());
+        if (!eventModels.isEmpty()) {
+            product.checkOptimisticConcurrency(eventModels.getLast().getVersion());
+        }
 
         int version = product.getVersion();
         for (DomainEvent event : unconsumedDomainEvents) {
@@ -97,7 +99,7 @@ public class EventStoreServiceImpl implements EventStoreService {
 
     private List<String> getAggregateIds() {
         var eventList = eventStoreRepository.findAll();
-        if(eventList.isEmpty()){
+        if (eventList.isEmpty()) {
             throw new ProductApplicationException.EventStoreIsEmpty("Event store is empty.");
         }
         return eventList.stream()
