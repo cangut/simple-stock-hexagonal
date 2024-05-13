@@ -1,4 +1,4 @@
-package com.example.can.repository;
+package com.example.can.port.outbound;
 
 import com.example.can.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -4,7 +4,7 @@ import com.example.can.entity.ProductEntity;
 import com.example.can.entity.StockEntity;
 import com.example.can.event.ProductEvent;
 import com.example.can.port.outbound.ProductEventHandler;
-import com.example.can.repository.ProductJpaRepository;
+import com.example.can.port.outbound.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
