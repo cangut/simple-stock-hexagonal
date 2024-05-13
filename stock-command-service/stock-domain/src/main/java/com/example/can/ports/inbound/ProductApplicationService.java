@@ -5,6 +5,7 @@ import com.example.can.query.ProductQuery;
 
 public abstract class ProductApplicationService<R> implements CommandDispatcher<R, ProductCommand>, QueryDispatcher<R, ProductQuery> {
 
+    @Override
     public R dispatch(ProductCommand command) {
         return switch (command) {
             case ProductCommand.Create c -> this.handle(c);
@@ -17,6 +18,7 @@ public abstract class ProductApplicationService<R> implements CommandDispatcher<
         };
     }
 
+    @Override
     public R dispatch(ProductQuery query) {
         return switch (query) {
             case ProductQuery.ById q -> this.handle(q);
