@@ -36,6 +36,14 @@ public abstract class AggregateRoot<Id> {
         }
     }
 
+    protected void raiseEvent(DomainEvent event) {
+        applyChange(event, true);
+    }
+
+    public void replayEvents(List<DomainEvent> events) {
+        events.forEach(event -> applyChange(event, false));
+    }
+
     protected void applyChange(DomainEvent event, boolean isNew) {
         try {
             var method = getClass().getDeclaredMethod("apply", event.getClass());
@@ -50,14 +58,6 @@ public abstract class AggregateRoot<Id> {
                 domainEvents.add(event);
             }
         }
-    }
-
-    protected void raiseEvent(DomainEvent event) {
-        applyChange(event, true);
-    }
-
-    public void replayEvents(List<DomainEvent> events) {
-        events.forEach(event -> applyChange(event, false));
     }
 
     @Override
