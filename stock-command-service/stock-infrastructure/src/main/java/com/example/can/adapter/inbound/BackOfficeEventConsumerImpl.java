@@ -23,6 +23,7 @@ public class BackOfficeEventConsumerImpl implements BackOfficeEventConsumer<Ackn
     public void consume(@Payload ProductEvent.StatusChanged statusChanged, Acknowledgment acknowledgment) {
         var changeStatus = mapToChangeStatus(statusChanged);
         productApplicationService.dispatch(changeStatus);
+        acknowledgment.acknowledge();
     }
 
     private ProductCommand.ChangeStatus mapToChangeStatus(ProductEvent.StatusChanged statusChanged) {
