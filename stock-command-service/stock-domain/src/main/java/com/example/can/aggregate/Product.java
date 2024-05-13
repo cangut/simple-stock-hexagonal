@@ -11,6 +11,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
+/*
+-single entity or cluster of entities or value object.
+-loaded and saved as a whole and as a single unit -> atomicity and consistency
+-optimistic concurrency control
+ */
 
 @Builder
 @AllArgsConstructor
