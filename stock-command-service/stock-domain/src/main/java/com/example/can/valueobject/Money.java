@@ -1,10 +1,13 @@
 package com.example.can.valueobject;
 
+import com.example.can.exception.ProductDomainException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public record Money(BigDecimal amount) {
     public static final Money ZERO = new Money(BigDecimal.ZERO);
+
     public boolean isGreaterThanZero() {
         return this.amount != null && this.amount.compareTo(BigDecimal.ZERO) > 0;
     }
@@ -30,6 +33,10 @@ public record Money(BigDecimal amount) {
     }
 
     public static Money calculateVatRateIncludedPrice(Integer vatRate, Money basePrice) {
+        boolean greaterThan = basePrice.isGreaterThan(basePrice);
+        if (!greaterThan) {
+            throw new ProductDomainException.AmountMustBeGreaterThanZero("Money amount must be greater than zero");
+        }
         var vatRatePrice = (basePrice.multiply(vatRate)).divide(100);
         return basePrice.add(vatRatePrice);
     }
