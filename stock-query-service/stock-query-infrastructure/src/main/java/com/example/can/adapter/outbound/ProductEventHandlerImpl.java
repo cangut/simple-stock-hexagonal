@@ -7,12 +7,14 @@ import com.example.can.port.outbound.ProductEventHandler;
 import com.example.can.port.outbound.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductEventHandlerImpl implements ProductEventHandler {
     private final ProductJpaRepository repository;
 
+    @Transactional
     public void handle(ProductEvent.Created created) {
         var stockEntity = StockEntity.builder()
                 .id(created.stock().stockId())
@@ -42,6 +44,7 @@ public class ProductEventHandlerImpl implements ProductEventHandler {
         repository.save(productEntity);
     }
 
+    @Transactional
     public void handle(ProductEvent.UnitInStockIncreased unitInStockIncreased) {
         var product = repository.findById(unitInStockIncreased.productId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -53,6 +56,7 @@ public class ProductEventHandlerImpl implements ProductEventHandler {
         repository.save(product);
     }
 
+    @Transactional
     public void handle(ProductEvent.UnitInStockDecreased unitInStockDecreased) {
         var product = repository.findById(unitInStockDecreased.productId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -64,6 +68,7 @@ public class ProductEventHandlerImpl implements ProductEventHandler {
         repository.save(product);
     }
 
+    @Transactional
     public void handle(ProductEvent.Closed closed) {
         var product = repository.findById(closed.productId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));

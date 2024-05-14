@@ -8,6 +8,7 @@ import com.example.can.ports.outbound.EventProducerService;
 import com.example.can.ports.outbound.EventStoreService;
 import com.example.can.repository.EventStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -20,6 +21,8 @@ public class EventStoreServiceImpl implements EventStoreService {
 
     private final EventStoreRepository eventStoreRepository;
     private final EventProducerService eventProducerService;
+    @Value("${spring.kafka.replay.topic}")
+    private String replayTopic;
 
     @Autowired
     public EventStoreServiceImpl(EventStoreRepository eventStoreRepository, EventProducerService eventProducerService) {
@@ -84,7 +87,7 @@ public class EventStoreServiceImpl implements EventStoreService {
             if (aggregate == null) continue;
             var events = getEvents(aggregate.getId().getValue().toString());
             for (EventModel eventModel : events) {
-                eventProducerService.produce(eventModel.getEventData().getClass().getSimpleName(), eventModel.getEventData());
+                eventProducerService.produce(replayTopic, eventModel.getEventData());
             }
         }
     }

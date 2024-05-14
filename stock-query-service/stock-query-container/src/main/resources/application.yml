@@ -19,6 +19,8 @@ spring:
       mode: always
       schema-locations: classpath:init-schema.sql
   kafka:
+    replay:
+      topic: stock-replay
     listener:
       ack-mode: manual_immediate
     consumer:

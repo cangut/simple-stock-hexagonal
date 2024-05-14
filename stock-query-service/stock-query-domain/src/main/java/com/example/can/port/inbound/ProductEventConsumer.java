@@ -9,5 +9,6 @@ public interface ProductEventConsumer {
     void consume(@Payload ProductEvent.UnitInStockIncreased unitInStockIncreased, Acknowledgment acknowledgment);
     void consume(@Payload ProductEvent.UnitInStockDecreased unitInStockDecreased, Acknowledgment acknowledgment);
     void consume(@Payload ProductEvent.Closed closed, Acknowledgment acknowledgment);
+    void consume(@Payload ProductEvent productEvent, Acknowledgment acknowledgment);
 
 }
