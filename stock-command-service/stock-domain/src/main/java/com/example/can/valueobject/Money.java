@@ -33,7 +33,7 @@ public record Money(BigDecimal amount) {
     }
 
     public static Money calculateVatRateIncludedPrice(Integer vatRate, Money basePrice) {
-        boolean greaterThan = basePrice.isGreaterThan(basePrice);
+        boolean greaterThan = basePrice.isGreaterThanZero();
         if (!greaterThan) {
             throw new ProductDomainException.AmountMustBeGreaterThanZero("Money amount must be greater than zero");
         }
