@@ -83,9 +83,7 @@ public class EventStoreServiceImpl implements EventStoreService {
     public void recover() {
         var aggregateIds = getAggregateIds();
         for (String aggregateId : aggregateIds) {
-            var aggregate = this.getProductById(aggregateId);
-            if (aggregate == null) continue;
-            var events = getEvents(aggregate.getId().getValue().toString());
+            var events = getEvents(aggregateId);
             for (EventModel eventModel : events) {
                 eventProducerService.produce(replayTopic, eventModel.getEventData());
             }
