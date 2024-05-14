@@ -80,7 +80,7 @@ public class EventStoreServiceImpl implements EventStoreService {
     }
 
     @Override
-    public void republishEvents() {
+    public void recover() {
         var aggregateIds = getAggregateIds();
         for (String aggregateId : aggregateIds) {
             var aggregate = this.getProductById(aggregateId);

@@ -5,5 +5,5 @@ import com.example.can.aggregate.Product;
 public interface EventStoreService {
     void saveEvents(Product product);
     Product getProductById(String aggregateId);
-    void republishEvents();
+    void recover();
 }

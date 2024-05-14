@@ -81,7 +81,7 @@ public class ProductApplicationServiceImpl extends ProductApplicationService<Pro
 
     @Override
     protected ProductResponse handle(ProductCommand.Replay replay) {
-        eventStore.republishEvents();
+        eventStore.recover();
         return null;
     }
 
